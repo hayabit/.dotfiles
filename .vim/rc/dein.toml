@@ -1,0 +1,28 @@
+# 基本は github.com のレポジトリーを指定するだけ
+[[plugins]]
+repo = 'Shougo/dein.vim'
+
+# ファイルをtree表示してくれる
+[[plugins]]
+repo = 'scrooloose/nerdtree'
+
+# コメントON/OFFを手軽に実行
+[[plugins]]
+repo = 'tomtom/tcomment_vim'
+
+# インデントに色を付けて見やすくする
+[[plugins]]
+repo = 'nathanaelkane/vim-indent-guides'
+
+[[plugins]]
+repo = 'bronson/vim-trailing-whitespace'
+
+[[plugins]]
+repo = 'Shougo/neosnippet'
+
+[[plugins]]
+repo = 'Shougo/neosnippet-snippets'
+
+[[plugins]]
+repo = 'Shougo/neocomplete.vim'
+
