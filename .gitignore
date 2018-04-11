@@ -1,4 +1,5 @@
 .config/nvim/bundle/
 .config/nvim/dein/
+.config/xbuild/
 .zprezto/modules/
 
