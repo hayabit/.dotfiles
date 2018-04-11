@@ -17,12 +17,13 @@ repo = 'nathanaelkane/vim-indent-guides'
 [[plugins]]
 repo = 'bronson/vim-trailing-whitespace'
 
-[[plugins]]
-repo = 'Shougo/neosnippet'
-
+# 入力補完
 [[plugins]]
 repo = 'Shougo/neosnippet-snippets'
 
 [[plugins]]
-repo = 'Shougo/neocomplete.vim'
+repo = 'w0rp/ale'
+
+[[plugins]]
+repo = 'thinca/vim-quickrun'
 

@@ -1,2 +1,4 @@
-.vim
-.zprezto/modules
+.config/nvim/bundle/
+.config/nvim/dein/
+.zprezto/modules/
+

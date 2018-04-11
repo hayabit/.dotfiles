@@ -11,6 +11,8 @@ set nocompatible
 set ruler
 "行番号表示
 set number
+"文字列置換をインタラクティブに表示するオプション
+set inccommand=split
 
 """"""""""""""""""""""""""""""
 
@@ -52,6 +54,24 @@ nnoremap <silent><C-d> :FixWhitespace<CR>
 " vimを立ち上げたときに、自動的にvim-indent-guidesをオンにする
 let g:indent_guides_enable_on_vim_startup = 1
 
+" vimを立ち上げたときに、自動的にdeopleteをオンにする
+let g:deoplete#enable_at_startup = 1
+
+" ale の設定
+" 保存時のみ実行する
+let g:ale_lint_on_text_changed = 0
+" 表示に関する設定
+let g:ale_sign_error = '✖'
+let g:ale_sign_warning = '⚠'
+let g:airline#extensions#ale#open_lnum_symbol = '('
+let g:airline#extensions#ale#close_lnum_symbol = ')'
+let g:ale_echo_msg_format = '[%linter%]%code: %%s'
+highlight link ALEErrorSign Tag
+highlight link ALEWarningSign StorageClass
+" Ctrl + kで次の指摘へ、Ctrl + jで前の指摘へ移動
+nmap <silent> <C-k> <Plug>(ale_previous_wrap)
+nmap <silent> <C-j> <Plug>(ale_next_wrap)
+
 "ペースト時に自動インデントで崩れるのを防ぐ
 if &term =~ "xterm"
     let &t_SI .= "\e[?2004h"
@@ -90,7 +110,7 @@ if dein#load_state(s:dein_dir)
 
     " プラグインリストを収めた TOML ファイル
     " 予め TOML ファイルを用意しておく
-    let g:rc_dir    = expand('~/.vim/rc')
+    let g:rc_dir    = expand('~/.config/nvim')
     let s:toml      = g:rc_dir . '/dein.toml'
     let s:lazy_toml = g:rc_dir . '/dein_lazy.toml'
 
@@ -169,7 +189,7 @@ set wildmode=list:longest,full
 set showcmd
 
 "クリップボードの共有
-set clipboard=unnamed,autoselect
+set clipboard+=unnamedplus
 
 "カーソル移動で行をまたげるようにする
 set whichwrap=b,s,h,l,<,>,~,[,]
