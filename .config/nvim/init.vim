@@ -14,6 +14,8 @@ set number
 "文字列置換をインタラクティブに表示するオプション
 set inccommand=split
 
+set sh=zsh
+
 """"""""""""""""""""""""""""""
 
 "カーソル移動
@@ -46,7 +48,7 @@ nnoremap Y y$
 nnoremap <silent><Esc><Esc> :<C-u>set nohlsearch!<CR>
 
 "NERDTreeToggle コマンドのショートカット
-nnoremap <silent><C-e> :NERDTreeToggle<CR>
+nnoremap <silent><C-t> :NERDTreeToggle<CR>
 
 "余分な行末の半角スペースを削除
 nnoremap <silent><C-d> :FixWhitespace<CR>
@@ -56,6 +58,48 @@ let g:indent_guides_enable_on_vim_startup = 1
 
 " vimを立ち上げたときに、自動的にdeopleteをオンにする
 let g:deoplete#enable_at_startup = 1
+
+let g:rustfmt_autosave = 1
+let g:rustfmt_command = '$HOME/.cargo/bin/rustfmt'
+
+" swiftの自動補完on
+let g:deoplete#sources#swift#daemon_autostart = 1
+
+set hidden
+let g:racer_cmd = '$HOME/.cargo/bin/racer'
+let $RUST_SRC_PATH="/usr/local/src/rustc-1.5.0/src"
+
+let g:nvim_nim_highlighter_semantics=1
+
+let g:vim_markdown_conceal = 0
+let g:tex_conceal=''
+let g:vim_markdown_toc_autofit = 1
+
+let g:previm_open_cmd = 'open -a Safari'
+let g:previm_disable_default_css = 1
+let g:previm_custom_css_path = '~/.config/nvim/markdown.css'
+
+" texfile かつ v モード の時 gq で markdown を tex に変換できる
+augroup texfile
+  autocmd BufRead,BufNewFile *.tex set filetype=tex
+  let md_to_latex  = "pandoc --from=markdown --to=latex"
+  autocmd Filetype tex let &formatprg=md_to_latex
+augroup END
+
+augroup PrevimSettings
+  autocmd!
+  autocmd BufNewFile,BufRead *.{md,mdwn,mkd,mkdn,mark*} set filetype=markdown
+augroup END
+
+" neoterm 用の設定
+let g:neoterm_autoscroll=1 " REPLを自動的に改行
+let g:neoterm_default_mod='belowright'
+tnoremap <silent> <ESC> <C-\><C-n><C-w>
+tnoremap <silent> jj <C-\><C-n><C-w>
+nnoremap <silent> <C-e> V:TREPLSendLine<CR>j0
+" ノーマルモードで現在のカーソル行を実行
+vnoremap <silent> <C-e> V:TREPLSendSelection<CR>'>j0
+" ヴィジュアルモードで選択範囲を実行
 
 " ale の設定
 " 保存時のみ実行する
@@ -74,20 +118,29 @@ nmap <silent> <C-j> <Plug>(ale_next_wrap)
 
 "ペースト時に自動インデントで崩れるのを防ぐ
 if &term =~ "xterm"
-    let &t_SI .= "\e[?2004h"
-    let &t_EI .= "\e[?2004l"
-    let &pastetoggle = "\e[201~"
+  let &t_SI .= "\e[?2004h"
+  let &t_EI .= "\e[?2004l"
+  let &pastetoggle = "\e[201~"
 
-    function XTermPasteBegin(ret)
-        set paste
-        return a:ret
-    endfunction
+  function XTermPasteBegin(ret)
+    set paste
+    return a:ret
+  endfunction
 
-    inoremap <special> <expr> <Esc>[200~ XTermPasteBegin("")
+  inoremap <special> <expr> <Esc>[200~ XTermPasteBegin("")
 endif
 
 
 filetype plugin indent on
+
+" quickrun
+" normalモードで \r で実行
+let g:quickrun_config = {}
+let g:quickrun_config['swift'] = {
+\ 'command': 'xcrun',
+\ 'cmdopt': 'swift',
+\ 'exec': '%c %o %s',
+\}
 
 """"""""""""""""""""""""""""""""""""""""
 
@@ -98,34 +151,34 @@ let s:dein_repo_dir = s:dein_dir . '/repos/github.com/Shougo/dein.vim'
 
 " dein.vim がなければ github から落としてくる
 if &runtimepath !~# '/dein.vim'
-    if !isdirectory(s:dein_repo_dir)
-        execute '!git clone https://github.com/Shougo/dein.vim' s:dein_repo_dir
-    endif
-    execute 'set runtimepath^=' . fnamemodify(s:dein_repo_dir, ':p')
+  if !isdirectory(s:dein_repo_dir)
+    execute '!git clone https://github.com/Shougo/dein.vim' s:dein_repo_dir
+  endif
+  execute 'set runtimepath^=' . fnamemodify(s:dein_repo_dir, ':p')
 endif
 
 " 設定開始
 if dein#load_state(s:dein_dir)
-    call dein#begin(s:dein_dir)
+  call dein#begin(s:dein_dir)
 
-    " プラグインリストを収めた TOML ファイル
-    " 予め TOML ファイルを用意しておく
-    let g:rc_dir    = expand('~/.config/nvim')
-    let s:toml      = g:rc_dir . '/dein.toml'
-    let s:lazy_toml = g:rc_dir . '/dein_lazy.toml'
+  " プラグインリストを収めた TOML ファイル
+  " 予め TOML ファイルを用意しておく
+  let g:rc_dir    = expand('~/.config/nvim')
+  let s:toml      = g:rc_dir . '/dein.toml'
+  let s:lazy_toml = g:rc_dir . '/dein_lazy.toml'
 
-    " TOML を読み込み、キャッシュしておく
-    call dein#load_toml(s:toml,      {'lazy': 0})
-    call dein#load_toml(s:lazy_toml, {'lazy': 1})
+  " TOML を読み込み、キャッシュしておく
+  call dein#load_toml(s:toml,      {'lazy': 0})
+  call dein#load_toml(s:lazy_toml, {'lazy': 1})
 
-    " 設定終了
-    call dein#end()
-    call dein#save_state()
+  " 設定終了
+  call dein#end()
+  call dein#save_state()
 endif
 
 " もし、未インストールものものがあったらインストール
 if dein#check_install()
-    call dein#install()
+  call dein#install()
 endif
 
 """"""""""""""""""""""""""
@@ -149,13 +202,19 @@ syntax enable
 set autoindent
 
 "インデント幅
-set shiftwidth=4
-set softtabstop=4
-set tabstop=4
+set shiftwidth=2
+set softtabstop=2
+set tabstop=2
 
 "タブをスペースに変換
 set expandtab
 set smarttab
+
+"言語ごとにインデント幅を変える
+augroup fileTypeIndent
+  autocmd!
+  autocmd BufNewFile,BufRead *.py set filetype=python softtabstop=4 tabstop=4 shiftwidth=4
+augroup END
 
 "ビープ音すべてを無効にする
 set visualbell t_vb=
@@ -226,16 +285,31 @@ set undodir=$HOME/.dotfiles/.config/nvim/backup
 set noswapfile
 
 function! ZenkakuSpace()
-    highlight ZenkakuSpace cterm=underline ctermfg=lightblue guibg=darkgray
+  highlight ZenkakuSpace cterm=underline ctermfg=lightblue guibg=darkgray
 endfunction
 
 " 全角スペースの表示
 if has('syntax')
-    augroup ZenkakuSpace
-        autocmd!
-        autocmd ColorScheme * call ZenkakuSpace()
-        autocmd VimEnter,WinEnter,BufRead * let w:m1=matchadd('ZenkakuSpace', '　')
-    augroup END
-    call ZenkakuSpace()
+  augroup ZenkakuSpace
+    autocmd!
+    autocmd ColorScheme * call ZenkakuSpace()
+    autocmd VimEnter,WinEnter,BufRead * let w:m1=matchadd('ZenkakuSpace', '　')
+  augroup END
+  call ZenkakuSpace()
 endif
 
+" nim.vim
+fun! JumpToDef()
+  if exists("*GotoDefinition_" . &filetype)
+    call GotoDefinition_{&filetype}()
+  else
+    exe "norm! \<C-]>"
+  endif
+endf
+
+" Jump to tag
+nn <M-g> :call JumpToDef()<cr>
+ino <M-g> <esc>:call JumpToDef()<cr>i
+
+" Turn off paste mode when leaving insert
+autocmd InsertLeave * set nopaste
