@@ -17,9 +17,16 @@ repo = 'nathanaelkane/vim-indent-guides'
 [[plugins]]
 repo = 'bronson/vim-trailing-whitespace'
 
+# Git を使えるように
+[[plugins]]
+repo = 'tpope/vim-fugitive'
+
 # 入力補完
 [[plugins]]
 repo = 'Shougo/neosnippet-snippets'
+
+[[plugins]]
+repo = 'Shougo/deoplete.nvim'
 
 [[plugins]]
 repo = 'w0rp/ale'
@@ -27,12 +34,8 @@ repo = 'w0rp/ale'
 [[plugins]]
 repo = 'thinca/vim-quickrun'
 
-
 [[plugins]]
 repo = 'vim-scripts/deoplete-rct'
-
-#[[plugins]]
-#repo = 'baabelfish/nvim-nim'
 
 [[plugins]]
 repo = 'wlangstroth/vim-racket'
@@ -52,10 +55,13 @@ repo = 'dhruvasagar/vim-table-mode'
 [[plugins]]
 repo = 'zah/nim.vim'
 
-# Swift 用の設定
-[[plugins]]
-repo = 'Shougo/deoplete.nvim'
+# Haskell 用
 
+[[plugins]]
+repo = 'neovimhaskell/haskell-vim'
+
+# Swift 用の設定
+#
 [[plugins]]
 repo = 'landaire/deoplete-swift'
 
@@ -64,3 +70,9 @@ repo = 'kballard/vim-swift'
 
 [[plugins]]
 repo = 'keith/swift.vim'
+
+[[plugins]]
+repo = 'lervag/vimtex'
+
+[[plugins]]
+repo = 'tpope/vim-obsession'

@@ -29,6 +29,8 @@ noremap <S-h> ^
 noremap <S-j> }
 noremap <S-k> {
 noremap <S-l> $
+nnoremap ; :
+nnoremap : ;
 
 "jjでノーマルモード
 inoremap jj <esc>
@@ -37,9 +39,6 @@ inoremap jj <esc>
 nnoremap <CR> A<CR><ESC>
 "ノーマルモードのままスペース
 nnoremap <space> i<space><esc>
-
-"rだけでリドゥ
-nnoremap r <C-r>
 
 "Yで行末までヤンク
 nnoremap Y y$
@@ -52,6 +51,13 @@ nnoremap <silent><C-t> :NERDTreeToggle<CR>
 
 "余分な行末の半角スペースを削除
 nnoremap <silent><C-d> :FixWhitespace<CR>
+
+"make コマンドを実行"
+nnoremap ,mk :make<CR>
+
+"git コマンドを実行"
+:command -nargs=* Gc Gcommit
+:command Gp Gpush
 
 " vimを立ち上げたときに、自動的にvim-indent-guidesをオンにする
 let g:indent_guides_enable_on_vim_startup = 1
@@ -72,6 +78,7 @@ let $RUST_SRC_PATH="/usr/local/src/rustc-1.5.0/src"
 let g:nvim_nim_highlighter_semantics=1
 
 let g:vim_markdown_conceal = 0
+let g:vim_markdown_conceal_code_blocks = 0
 let g:tex_conceal=''
 let g:vim_markdown_toc_autofit = 1
 
@@ -86,10 +93,15 @@ augroup texfile
   autocmd Filetype tex let &formatprg=md_to_latex
 augroup END
 
+let g:vimtex_view_general_viewer = '/Applications/Skim.app/Contents/SharedSupport/displayline'
+let g:vimtex_view_general_options = '@line @pdf @tex'
+
 augroup PrevimSettings
   autocmd!
   autocmd BufNewFile,BufRead *.{md,mdwn,mkd,mkdn,mark*} set filetype=markdown
 augroup END
+
+nnoremap <silent> <C-p> :PrevimOpen<CR>
 
 " neoterm 用の設定
 let g:neoterm_autoscroll=1 " REPLを自動的に改行
